@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/seat_selection"
+    android:orientation="vertical"
+    android:background="@color/black"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#cccccc"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/storeMovieName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:background="@drawable/screen">
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/seat1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+        <View
+            android:id="@+id/seat2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+        <View
+            android:id="@+id/seat3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+        <View
+            android:id="@+id/seat4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+        <View
+            android:id="@+id/seat5"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center|top"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/seat6"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+        <View
+            android:id="@+id/seat7"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+        <View
+            android:id="@+id/seat8"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+        <View
+            android:id="@+id/seat9"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+        <View
+            android:id="@+id/seat10"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#444444"
+            android:layout_margin="6dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp">
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="#444444"
+                android:layout_marginEnd="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/available"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp">
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="#E50914"
+                android:layout_marginEnd="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/booked"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <View
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="#4CAF50"
+                android:layout_marginEnd="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/selected"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:text="@string/seats_0_total_0"
+            android:textSize="20sp"
+            android:id="@+id/total"
+            />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="8dp">
+
+        <Button
+            android:id="@+id/btnBookSeats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="@string/book_seats"
+            android:backgroundTint="#E50914"
+            />
+
+        <Button
+            android:id="@+id/btnSnacks"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/proceed_to_snacks"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
