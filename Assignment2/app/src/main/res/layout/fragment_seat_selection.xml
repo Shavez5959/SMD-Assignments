@@ -245,6 +245,30 @@
             android:textColor="#000000"
             />
 
+        <Button
+            android:id="@+id/btnWatchTrailer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="Watch Trailer"
+            android:backgroundTint="#E50914"
+            />
+
+
+
+        <Button
+            android:id="@+id/btnComingSoon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:text="Coming Soon"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#000000"
+            />
+
 
 
     </LinearLayout>

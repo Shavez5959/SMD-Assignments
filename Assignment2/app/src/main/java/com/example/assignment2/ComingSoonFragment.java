@@ -53,6 +53,8 @@ public class ComingSoonFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("name-key", movie.getName());
+                bundle.putBoolean("isReleased-key", movie.getIsReleased());
+                bundle.putString("trailer-key", movie.getTrailer());
                 fragment.setArguments(bundle);
 
                 requireActivity().getSupportFragmentManager()
@@ -67,9 +69,9 @@ public class ComingSoonFragment extends Fragment {
 
         rvComingSoon.setAdapter(adapter);
 
-        movies.add(new Movie(R.drawable.hangover, "The Hangover ", "Comedy / 100 min", "https://www.youtube.com/watch?v=tlize92ffnY"));
-        movies.add(new Movie(R.drawable.conjuring, "The Conjuring", "Horror / 112 min", "https://www.youtube.com/watch?v=ejMMn0t58Lc"));
-        movies.add(new Movie(R.drawable.shutter_island, "Shutter Island", "Mystery / 148 min", "https://www.youtube.com/watch?v=v8yrZSkKxTA"));
+        movies.add(new Movie(R.drawable.hangover, "The Hangover ", "Comedy / 100 min", "https://www.youtube.com/watch?v=tlize92ffnY", false));
+        movies.add(new Movie(R.drawable.conjuring, "The Conjuring", "Horror / 112 min", "https://www.youtube.com/watch?v=ejMMn0t58Lc", false));
+        movies.add(new Movie(R.drawable.shutter_island, "Shutter Island", "Mystery / 148 min", "https://www.youtube.com/watch?v=v8yrZSkKxTA", false));
 
     }
 

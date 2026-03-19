@@ -57,6 +57,7 @@ public class NowShowingFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString("name-key", movie.getName());
+                bundle.putBoolean("isReleased-key", movie.getIsReleased());
                 fragment.setArguments(bundle);
 
                 requireActivity().getSupportFragmentManager()
@@ -73,9 +74,9 @@ public class NowShowingFragment extends Fragment {
 
 
 
-        movies.add(new Movie(R.drawable.the_dark_knight, "The Dark Knight", "Action / 152 min", "https://www.youtube.com/watch?v=EXeTwQWrcwY"));
-        movies.add(new Movie(R.drawable.inception, "Inception", "Sci-Fi / 148 min", "https://www.youtube.com/watch?v=YoHD9XEInc0"));
-        movies.add(new Movie(R.drawable.interstellar, "Interstellar", "Adventure / 169 min", "https://www.youtube.com/watch?v=zSWdZVtXT7E"));
+        movies.add(new Movie(R.drawable.the_dark_knight, "The Dark Knight", "Action / 152 min", "https://www.youtube.com/watch?v=EXeTwQWrcwY", true));
+        movies.add(new Movie(R.drawable.inception, "Inception", "Sci-Fi / 148 min", "https://www.youtube.com/watch?v=YoHD9XEInc0", true));
+        movies.add(new Movie(R.drawable.interstellar, "Interstellar", "Adventure / 169 min", "https://www.youtube.com/watch?v=zSWdZVtXT7E", true));
 
     }
 
