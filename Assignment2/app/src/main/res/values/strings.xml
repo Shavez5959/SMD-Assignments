@@ -43,4 +43,6 @@
     <string name="comedy_100_min">Comedy / 100 min</string>
     <string name="the_conjuring">The Conjuring</string>
     <string name="horror_112_min">Horror / 112 min</string>
+    <string name="shutter_island">Shutter Island</string>
+    <string name="mystery_148_min">Mystery / 148 min</string>
 </resources>
