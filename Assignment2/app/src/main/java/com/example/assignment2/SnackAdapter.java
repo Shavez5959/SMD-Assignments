@@ -21,13 +21,21 @@ public class SnackAdapter extends ArrayAdapter<Snack> {
 
     Button btnMinus, btnPlus;
 
-    TextView tvQty, SnackName, SnackDescription, SnackPrice;;
+    TextView tvQty, SnackName, SnackDescription, SnackPrice;
 
     ImageView SnackImage;
 
-    int quantity;
+    OnQuantityChangedListener listener;
 
-    String price;
+
+    public interface OnQuantityChangedListener{
+        void onQuantityChanged();
+    }
+
+    public void setOnQuantityChangeListener(OnQuantityChangedListener listener) {
+        this.listener = listener;
+    }
+
 
     public SnackAdapter(@NonNull Context context, @NonNull List<Snack> objects) {
         super(context,0, objects);
@@ -39,8 +47,10 @@ public class SnackAdapter extends ArrayAdapter<Snack> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        convertView= LayoutInflater.from(context)
-                .inflate(R.layout.snack_item, parent, false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context)
+                    .inflate(R.layout.snack_item, parent, false);
+        }
 
         Snack snack= getItem(position);
 
@@ -52,10 +62,12 @@ public class SnackAdapter extends ArrayAdapter<Snack> {
 
         SnackDescription.setText(snack.getDescription());
 
-        SnackPrice.setText(snack.getPrice());
+        SnackPrice.setText(String.format("$%.2f", snack.getPrice()));
 
-        btnPlus.setOnClickListener(v -> updateQuantity(tvQty, 1));
-        btnMinus.setOnClickListener(v -> updateQuantity(tvQty, -1));
+        tvQty.setText(String.valueOf(snack.getQuantity()));
+
+        btnPlus.setOnClickListener(v -> updateQuantity(snack, 1, tvQty));
+        btnMinus.setOnClickListener(v -> updateQuantity(snack, -1, tvQty));
 
 
         return convertView;
@@ -67,28 +79,24 @@ public class SnackAdapter extends ArrayAdapter<Snack> {
         return super.getCount();
     }
 
-    private void updateQuantity(TextView tv, int count)
+    private void updateQuantity(Snack snack, int count, TextView tv)
     {
-        int quantity=Integer.parseInt(tv.getText().toString().trim());
-        quantity+=count;
+        int quantity= snack.getQuantity() + count;
         if (quantity<0)
         {
             quantity=0;
         }
 
-        tv.setText(String.valueOf(quantity));
+        snack.setQuantity(quantity);
 
-        updateTotalPrice();
+        notifyDataSetChanged();
+
+        if (listener!=null)
+        {
+            listener.onQuantityChanged();
+        }
 
     }
-
-    private void updateTotalPrice()
-    {
-
-    }
-
-
-
 
 
     private void init(View convertView)

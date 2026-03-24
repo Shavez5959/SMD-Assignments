@@ -9,15 +9,18 @@ public class Snack {
 
     String description;
 
-    String price;
+    Double price;
+
+    int quantity;
 
 
 
-    public Snack(int image, String name, String description, String price) {
+    public Snack(int image, String name, String description, Double price, int quantity) {
         this.image = image;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.quantity= quantity;
     }
 
     public int getImage() {
@@ -32,7 +35,17 @@ public class Snack {
         return description;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
+
+    public int getQuantity()
+    {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }
+

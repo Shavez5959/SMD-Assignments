@@ -45,4 +45,8 @@
     <string name="horror_112_min">Horror / 112 min</string>
     <string name="shutter_island">Shutter Island</string>
     <string name="mystery_148_min">Mystery / 148 min</string>
+    <string name="reset">Reset</string>
+    <string name="confirm">Confirm</string>
+
+
 </resources>
