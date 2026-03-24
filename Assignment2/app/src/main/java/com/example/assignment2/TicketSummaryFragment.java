@@ -1,6 +1,8 @@
 package com.example.assignment2;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -58,6 +60,17 @@ public class TicketSummaryFragment extends Fragment {
         tvTotalPrice.setText(String.format("%.2f USD", grandTotal));
 
         btnSendTicket.setOnClickListener(v -> {
+
+            SharedPreferences prefs= requireContext().getSharedPreferences("BookPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+
+            editor.putString("movie_name", movieName);
+            editor.putInt("seats", ticketsCount);
+            editor.putFloat("total_price", (float) grandTotal);
+
+            editor.apply();
+
+
             String ticketText = "Booking Confirmation: You have booked " + ticketsCount + " ticket(s) for the movie '"
                     + movieName + "'. Ticket Price: " + ticketsPrice + " USD, Snacks Price: "
                     + String.format("%.2f USD", snacksPrice) + ". Grand Total: " + String.format("%.2f USD", grandTotal)
