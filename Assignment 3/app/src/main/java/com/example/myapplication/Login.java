@@ -87,7 +87,6 @@ public class Login extends AppCompatActivity {
             return;
         }
 
-
         auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(result -> {
                         SharedPreferences.Editor editor = prefs.edit();
