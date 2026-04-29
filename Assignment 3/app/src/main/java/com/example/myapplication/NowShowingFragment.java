@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,56 +9,55 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-
 
 public class NowShowingFragment extends Fragment {
 
-
     RecyclerView rvNowShowing;
-
     ArrayList<Movie> movies;
-
     MovieAdapter adapter;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_now_showing, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         init(view);
-
     }
 
-    private void init(View view)
-    {
-        rvNowShowing= view.findViewById(R.id.rvNowShowing);
+    private void init(View view) {
 
+        rvNowShowing = view.findViewById(R.id.rvNowShowing);
         rvNowShowing.setHasFixedSize(true);
 
-        movies= new ArrayList<>();
+        movies = new ArrayList<>();
 
-        adapter= new MovieAdapter(requireContext(), movies, new MovieAdapter.OnBookClickListener() {
+        adapter = new MovieAdapter(requireContext(), movies, new MovieAdapter.OnBookClickListener() {
             @Override
             public void onBookClick(Movie movie) {
+
                 SeatSelectionFragment fragment = new SeatSelectionFragment();
 
                 Bundle bundle = new Bundle();
                 bundle.putString("name-key", movie.getName());
                 bundle.putBoolean("isReleased-key", movie.getIsReleased());
+                bundle.putString("trailer-key", movie.getTrailer());
+
                 fragment.setArguments(bundle);
 
                 requireActivity().getSupportFragmentManager()
@@ -68,16 +68,93 @@ public class NowShowingFragment extends Fragment {
             }
         });
 
-        rvNowShowing.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        rvNowShowing.setLayoutManager(
+                new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        );
 
         rvNowShowing.setAdapter(adapter);
 
-
-
-        movies.add(new Movie(R.drawable.the_dark_knight, "The Dark Knight", "Action / 152 min", "https://www.youtube.com/watch?v=EXeTwQWrcwY", true));
-        movies.add(new Movie(R.drawable.inception, "Inception", "Sci-Fi / 148 min", "https://www.youtube.com/watch?v=YoHD9XEInc0", true));
-        movies.add(new Movie(R.drawable.interstellar, "Interstellar", "Adventure / 169 min", "https://www.youtube.com/watch?v=zSWdZVtXT7E", true));
-
+        loadMovies();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private void loadMovies() {
+
+        try {
+            JSONArray jsonArray = new JSONArray(loadJSONFromAsset());
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                boolean isReleased = obj.getBoolean("isReleased");
+
+                if (isReleased) {
+
+                    String name = obj.getString("name");
+                    String category = obj.getString("category");
+                    String trailer = obj.getString("trailer");
+                    String imageName = obj.getString("image");
+
+                    int imageResId;
+
+                    switch (imageName) {
+                        case "the_dark_knight":
+                            imageResId = R.drawable.the_dark_knight;
+                            break;
+                        case "inception":
+                            imageResId = R.drawable.inception;
+                            break;
+                        case "interstellar":
+                            imageResId = R.drawable.interstellar;
+                            break;
+                        case "hangover":
+                            imageResId = R.drawable.hangover;
+                            break;
+                        case "conjuring":
+                            imageResId = R.drawable.conjuring;
+                            break;
+                        case "shutter_island":
+                            imageResId = R.drawable.shutter_island;
+                            break;
+                        default:
+                            imageResId = R.drawable.placeholder;
+                            break;
+                    }
+
+                    movies.add(new Movie(imageResId, name, category, trailer, true));
+                }
+            }
+
+            adapter.notifyDataSetChanged();
+
+        } catch (JSONException e) {
+            Log.e("MOVIE_JSON_ERROR", "Failed to parse movies JSON", e);
+        }
+    }
+
+    private String loadJSONFromAsset() {
+
+        String json = null;
+
+        try {
+            InputStream is = requireContext().getAssets().open("movies.json");
+
+            int size = is.available();
+            byte[] buffer = new byte[size];
+
+            int bytesRead = is.read(buffer);
+
+            is.close();
+
+            if (bytesRead > 0) {
+                json = new String(buffer, StandardCharsets.UTF_8);
+            }
+
+        } catch (Exception e) {
+            Log.e("JSON_ERROR", "Error loading JSON", e);
+        }
+
+        return json;
+    }
 }
