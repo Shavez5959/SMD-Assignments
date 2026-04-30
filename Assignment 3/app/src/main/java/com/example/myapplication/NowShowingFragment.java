@@ -57,6 +57,7 @@ public class NowShowingFragment extends Fragment {
                 bundle.putString("name-key", movie.getName());
                 bundle.putBoolean("isReleased-key", movie.getIsReleased());
                 bundle.putString("trailer-key", movie.getTrailer());
+                bundle.putInt("poster-key", movie.getPoster());
 
                 fragment.setArguments(bundle);
 

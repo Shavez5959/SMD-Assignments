@@ -30,7 +30,7 @@ public class SnacksFragment extends Fragment {
 
     double total;
     String movieName;
-    int ticketsCount;
+    int ticketsCount, poster;
     double ticketsPrice;
 
 
@@ -52,6 +52,8 @@ public class SnacksFragment extends Fragment {
             movieName=getArguments().getString("name-key");
             ticketsCount=getArguments().getInt("seats-key");
             ticketsPrice=getArguments().getDouble("total-key");
+            poster=getArguments().getInt("poster-key");
+
 
         }
 
@@ -73,6 +75,8 @@ public class SnacksFragment extends Fragment {
             bundle.putInt("seats-key", ticketsCount);
             bundle.putDouble("tickets-total-key", ticketsPrice);
             bundle.putDouble("snacks-total-key", total);
+            bundle.putInt("poster-key", poster);
+
 
             fragment.setArguments(bundle);
 

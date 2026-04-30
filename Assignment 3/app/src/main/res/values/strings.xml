@@ -66,6 +66,10 @@
     <string name="navigation_drawer_close">Close</string>
     <string name="coming_soon">Coming Soon</string>
     <string name="total_price_0_00">Total Price: $0.00</string>
+    <string name="cancel">cancel</string>
+    <string name="my_booking">My Booking</string>
+    <string name="search">Search</string>
+    <string name="no_bookings_found">No bookings found</string>
 
 
 </resources>

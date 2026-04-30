@@ -39,6 +39,8 @@ public class SeatSelectionFragment extends Fragment {
 
     int totalPrice = 0;
 
+    int poster;
+
     ArrayList <Integer> selectedseats= new ArrayList<>();
 
 
@@ -68,6 +70,8 @@ public class SeatSelectionFragment extends Fragment {
             movieName = getArguments().getString("name-key");
             isReleased = getArguments().getBoolean("isReleased-key", true);
             trailer= getArguments().getString("trailer-key");
+            poster = getArguments().getInt("poster-key");
+
             storeMovieName.setText(movieName);
         }
 
@@ -103,6 +107,7 @@ public class SeatSelectionFragment extends Fragment {
                     bundle.putInt("seats-key", selectedSeats);
                     bundle.putDouble("tickets-total-key", totalPrice);
                     bundle.putInt("snacks-total-key", 0);
+                    bundle.putInt("poster-key", poster);
 
                     fragment.setArguments(bundle);
 
@@ -128,6 +133,8 @@ public class SeatSelectionFragment extends Fragment {
                 bundle.putString("name-key", movieName);
                 bundle.putInt("seats-key", selectedSeats);
                 bundle.putDouble("total-key", totalPrice);
+                bundle.putInt("poster-key", poster);
+
 
                 fragment.setArguments(bundle);
 

@@ -1,64 +1,156 @@
 package com.example.myapplication;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.*;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.*;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.*;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BookingsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class BookingsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    RecyclerView recyclerView;
+    EditText searchBar;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ArrayList<Booking> list;
+    ArrayList<Booking> filteredList;
 
-    public BookingsFragment() {
-        // Required empty public constructor
-    }
+    BookingAdapter adapter;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BookingsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BookingsFragment newInstance(String param1, String param2) {
-        BookingsFragment fragment = new BookingsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    DatabaseReference ref;
+    String userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bookings, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        recyclerView = view.findViewById(R.id.recyclerViewBookings);
+        searchBar = view.findViewById(R.id.searchBar);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        list = new ArrayList<>();
+        filteredList = new ArrayList<>();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        ref = FirebaseDatabase.getInstance(
+                "https://my-application-99baa-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        ).getReference("bookings").child(userId);
+
+        adapter = new BookingAdapter(requireContext(), filteredList, this::showCancelDialog);
+        recyclerView.setAdapter(adapter);
+
+        setupSearch();
+        loadBookings();
+    }
+
+
+    private void setupSearch() {
+
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterList(s.toString());
+            }
+
+            @Override public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void filterList(String query) {
+
+        filteredList.clear();
+
+        if (query.isEmpty()) {
+            filteredList.addAll(list);
+        } else {
+            for (Booking b : list) {
+                if (b.movieName.toLowerCase().contains(query.toLowerCase())) {
+                    filteredList.add(b);
+                }
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+
+    private void loadBookings() {
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                list.clear();
+
+                for (DataSnapshot data : snapshot.getChildren()) {
+
+                    Booking booking = data.getValue(Booking.class);
+
+                    if (booking != null) {
+                        booking.id = data.getKey();
+                        list.add(booking);
+                    }
+                }
+
+
+                filterList(searchBar.getText().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(requireContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void showCancelDialog(Booking booking) {
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Cancel Booking")
+                .setMessage("Are you sure you want to cancel this booking?")
+                .setPositiveButton("Yes", (d, w) -> {
+
+                    ref.child(booking.id).removeValue()
+                            .addOnSuccessListener(unused ->
+                                    Toast.makeText(requireContext(),
+                                            "Booking Cancelled Successfully",
+                                            Toast.LENGTH_SHORT).show()
+                            )
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(requireContext(),
+                                            "Error: " + e.getMessage(),
+                                            Toast.LENGTH_SHORT).show()
+                            );
+
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }
